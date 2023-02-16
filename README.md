@@ -10,11 +10,3 @@ Mongoose
 JWT  
 Multer  
 
-
-
-`"type": "module"`
-```js
-import { fileURLToPath } from 'url'
-const __filename = fileURLToPath(import.meta.url)
-```
-

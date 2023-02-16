@@ -1,5 +1,3 @@
-import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import {
   EditOutlined,
   DeleteOutlined,
@@ -17,26 +15,25 @@ import {
   useTheme,
   Button,
   IconButton,
-  useMediaQuery
+  useMediaQuery,
 } from '@mui/material'
 import FlexBetween from 'components/FlexBetween'
 import Dropzone from 'react-dropzone'
 import UserImage from 'components/UserImage'
 import Wrapper from 'components/Wrapper'
+import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { setPosts } from 'store'
-import { borderRadius } from '@mui/system'
 
 const MyPostWidget = ({ picturePath }) => {
+  const dispatch = useDispatch()
   const [isImage, setIsImage] = useState(false)
   const [image, setImage] = useState(null)
   const [post, setPost] = useState('')
-
-  const dispatch = useDispatch()
-  const { _id } = useSelector(state => state.user)
-  const token = useSelector(state => state.token)
   const { palette } = useTheme()
-  const isNonMobileScreens = useMediaQuery('(min-width: 1000px')
-
+  const { _id } = useSelector((state) => state.user)
+  const token = useSelector((state) => state.token)
+  const isNonMobileScreens = useMediaQuery('(min-width: 1000px)')
   const mediumMain = palette.neutral.mediumMain
   const medium = palette.neutral.medium
 
@@ -49,14 +46,12 @@ const MyPostWidget = ({ picturePath }) => {
       formData.append('picturePath', image.name)
     }
 
-    const response = await fetch(
-      `http://localhost:3141/posts`,
-      {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${token}` },
-        body: formData
-      }
-    )
+    const response = await fetch(`http://localhost:3141/posts`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+      body: formData,
+    })
+
     const posts = await response.json()
     dispatch(setPosts({ posts }))
     setImage(null)
@@ -67,15 +62,15 @@ const MyPostWidget = ({ picturePath }) => {
     <Wrapper>
       <FlexBetween gap='1.5rem'>
         <UserImage image={picturePath} />
-        <InputBase 
+        <InputBase
           placeholder={`What's on your mind...`}
-          onChange={e => setPost(e.target.value)}
+          onChange={(e) => setPost(e.target.value)}
           value={post}
           sx={{
             width: '100%',
             backgroundColor: palette.neutral.light,
             borderRadius: '2rem',
-            padding: '1rem 2rem'
+            padding: '1rem 2rem',
           }}
         />
       </FlexBetween>
@@ -87,12 +82,11 @@ const MyPostWidget = ({ picturePath }) => {
           p='1rem'
         >
           <Dropzone
-            acceptFiles='.jpg, .jpeg, .png'
+            acceptedFiles='.jpg,.jpeg,.png'
             multiple={false}
-            onDrop={acceptedFiles => setImage(acceptedFiles[0])}
+            onDrop={(acceptedFiles) => setImage(acceptedFiles[0])}
           >
             {({ getRootProps, getInputProps }) => (
-              
               <FlexBetween>
                 <Box
                   {...getRootProps()}
@@ -128,10 +122,7 @@ const MyPostWidget = ({ picturePath }) => {
       <Divider sx={{ margin: '1.25rem 0' }} />
 
       <FlexBetween>
-        <FlexBetween 
-          gap='.25rem'
-          onClick={() => setImage(!image)}
-        >
+        <FlexBetween gap='0.25rem' onClick={() => setIsImage(!isImage)}>
           <ImageOutlined sx={{ color: mediumMain }} />
           <Typography
             color={mediumMain}
@@ -143,23 +134,23 @@ const MyPostWidget = ({ picturePath }) => {
 
         {isNonMobileScreens ? (
           <>
-            <FlexBetween gap='.25rem'>
+            <FlexBetween gap='0.25rem'>
               <GifBoxOutlined sx={{ color: mediumMain }} />
               <Typography color={mediumMain}>Clip</Typography>
             </FlexBetween>
-            
-            <FlexBetween gap='.25rem'>
+
+            <FlexBetween gap='0.25rem'>
               <AttachFileOutlined sx={{ color: mediumMain }} />
               <Typography color={mediumMain}>Attachment</Typography>
             </FlexBetween>
 
-            <FlexBetween gap='.25rem'>
+            <FlexBetween gap='0.25rem'>
               <MicOutlined sx={{ color: mediumMain }} />
               <Typography color={mediumMain}>Audio</Typography>
             </FlexBetween>
           </>
         ) : (
-          <FlexBetween gap='.25rem'>
+          <FlexBetween gap='0.25rem'>
             <MoreHorizOutlined sx={{ color: mediumMain }} />
           </FlexBetween>
         )}
@@ -170,14 +161,14 @@ const MyPostWidget = ({ picturePath }) => {
           sx={{
             color: palette.background.alt,
             backgroundColor: palette.primary.main,
-            borderRadius: '3rem'
+            borderRadius: '3rem',
           }}
         >
           POST
         </Button>
       </FlexBetween>
     </Wrapper>
-    )
-  }
-  
-  export default MyPostWidget
+  )
+}
+
+export default MyPostWidget

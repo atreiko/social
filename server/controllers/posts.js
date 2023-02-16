@@ -2,6 +2,7 @@ import Post from '../models/Post.js'
 import User from '../models/User.js'
 
 export const createPost = async (req, res) => {
+  console.log('CREATE --->>',req.body);
   try {
     const { userId, description, picturePath } = req.body
     const user = await User.findById(userId)
@@ -35,6 +36,7 @@ export const createPost = async (req, res) => {
 export const getFeedPosts = async (req, res) => {
   try {
     const post = await Post.find()
+    // console.log('###################### post', post);
     res
       .status(200)
       .json(post)
@@ -49,8 +51,9 @@ export const getFeedPosts = async (req, res) => {
 export const getUserPosts = async (req, res) => {
   try {
     const { userId } = req.params
+    // console.log('USER ID REQUEST PARAMS ------>>>>>', userId);
     const post = await Post.find({ userId })
-
+    // console.log('###################### post', post);
     res
       .status(200)
       .json(post)
